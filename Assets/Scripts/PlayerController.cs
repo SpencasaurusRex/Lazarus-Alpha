@@ -10,7 +10,9 @@ public class PlayerController : MonoBehaviour
     public KeyCode m_Down = KeyCode.S;
     public KeyCode m_Left = KeyCode.A;
     public KeyCode m_Right = KeyCode.D;
+    public KeyCode m_Modifier = KeyCode.LeftShift;
 	public float m_Speed = 1;
+    public float m_SprintMultiplier = 1.75f;
 
     void Update()
     {
@@ -43,7 +45,13 @@ public class PlayerController : MonoBehaviour
 		}
 
 		// Apply speed and time to the direction vector
-		direction *= m_Speed * Time.deltaTime;
+		direction *= Time.deltaTime * m_Speed;
+
+        if (Input.GetKey(m_Modifier))
+        {
+            //If sprinting
+            direction *= m_SprintMultiplier;
+        }
 
 		// Move the direction
 		transform.position += new Vector3(direction.x, direction.y, 0.0f);
