@@ -22,8 +22,8 @@ public class Homing : MonoBehaviour
 			return;
 		}
 
-		Vector2 pos = Util.convert (transform.position);
-		Vector2 targetPos = Util.convert (target.position);
+		Vector2 pos = Util.Convert (transform.position);
+		Vector2 targetPos = Util.Convert (target.position);
         Vector2 desiredVelocity = (targetPos - pos).normalized * speed;
         Vector2 force = (desiredVelocity - rb.velocity).normalized * speed;
         

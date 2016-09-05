@@ -1,15 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Cell : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
+public class Cell : MonoBehaviour
+{
+	public Room room {
+		set;
+		get;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	private CellPosition pos;
+
+	public CellPosition Pos {
+		set
+		{ 
+			pos = value;
+			// TODO update room object
+			transform.position = Util.MoveXY(transform.position, Util.Convert(pos));
+		}
+
+		get
+		{ 
+			return pos;
+		}
+
 	}
 }
