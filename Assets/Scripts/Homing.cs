@@ -5,11 +5,10 @@ using System.Collections;
 public class Homing : MonoBehaviour
 {
 	public Transform target;
+	private Rigidbody2D rb;
 
 	[SerializeField]
 	private float speed;
-
-	private Rigidbody2D rb;
 
 	void Start ()
 	{
@@ -25,16 +24,9 @@ public class Homing : MonoBehaviour
 
 		Vector2 pos = Util.convert (transform.position);
 		Vector2 targetPos = Util.convert (target.position);
-		Vector2 neededForce = targetPos - pos - rb.velocity;
-
-		Debug.Log (neededForce * speed);
-
-		if (Util.isZero (neededForce))
-		{
-			Debug.Log ("Exiting");
-			return;
-		}
-
-		rb.AddForce (neededForce * speed);
+        Vector2 desiredVelocity = (targetPos - pos).normalized * speed;
+        Vector2 force = (desiredVelocity - rb.velocity).normalized * speed;
+        
+		rb.AddForce (force);
 	}
 }
