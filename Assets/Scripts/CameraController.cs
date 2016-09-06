@@ -31,11 +31,18 @@ public class CameraController : MonoBehaviour {
             transform.position = new Vector3 (target.position.x, target.position.y, transform.position.z);
         }
 
-		zoomTarget -= Input.mouseScrollDelta.y;
-		zoomTarget = Mathf.Clamp (zoomTarget, zoomRange.x, zoomRange.y);
-
 		zoomVel = (zoomTarget - cam.orthographicSize) * deltaZoom;
 
 		cam.orthographicSize += zoomVel * Time.deltaTime;
+	}
+
+	void OnGUI()
+	{
+		// TODO capture if this is a laptop scroll, and dampen if so.
+		if (Event.current.type == EventType.ScrollWheel)
+		{
+			zoomTarget -= Event.current.delta.y;
+			zoomTarget = Mathf.Clamp (zoomTarget, zoomRange.x, zoomRange.y);	
+		}
 	}
 }
