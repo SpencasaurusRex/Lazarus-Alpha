@@ -10,10 +10,7 @@ public class CameraController : MonoBehaviour {
     private Transform target;
 
 	[SerializeField]
-	private float minZoom;
-	
-	[SerializeField]
-	private float maxZoom;
+	private Vector2 zoomRange;
 
 	[SerializeField]
 	private float deltaZoom;
@@ -35,7 +32,7 @@ public class CameraController : MonoBehaviour {
         }
 
 		zoomTarget -= Input.mouseScrollDelta.y;
-		zoomTarget = Mathf.Clamp (zoomTarget, minZoom, maxZoom);
+		zoomTarget = Mathf.Clamp (zoomTarget, zoomRange.x, zoomRange.y);
 
 		zoomVel = (zoomTarget - cam.orthographicSize) * deltaZoom;
 
