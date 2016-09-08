@@ -3,19 +3,21 @@ using System.Collections;
 
 public class Cell : MonoBehaviour
 {
-	public Room room {
+	public Room room
+	{
 		set;
 		get;
 	}
 
 	private CellPosition pos;
 
-	public CellPosition Pos {
+	public CellPosition Pos
+	{
 		set
 		{ 
 			pos = value;
 			// TODO update room object
-			transform.position = Util.MoveXY(transform.position, Util.Convert(pos));
+			transform.position = Util.MoveXY (transform.position, Util.Convert (pos));
 		}
 
 		get

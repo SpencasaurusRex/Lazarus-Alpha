@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class World : Room {
-
+public class World : Room
+{
 	[SerializeField]
-	Cell [] seedCells;
+	Cell[] seedCells;
 
 	[SerializeField]
 	protected int width;
@@ -12,7 +12,8 @@ public class World : Room {
 	[SerializeField]
 	protected int height;
 
-	protected override void Load() {
+	protected override void Load ()
+	{
 		Debug.Log ("Loading World");
 		for (int i = 0; i < width; i++)
 		{
@@ -22,9 +23,10 @@ public class World : Room {
 
 				int index = Random.Range (0, seedCells.Length);
 				Cell c = seedCells [index];
-				c = Instantiate (c).GetComponent<Cell>();
+				c = Instantiate (c);
+				c.transform.parent = this.transform;
 				c.Pos = pos;
-				AddCell (pos, seedCells[index]);
+				AddCell (pos, seedCells [index]);
 			}
 		}
 	}

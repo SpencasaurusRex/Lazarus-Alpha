@@ -51,7 +51,7 @@ public class EnemyController : MonoBehaviour
 	private void StartWalking ()
 	{
 		walking = true;
-		target = Random.insideUnitCircle * walkLength;
+		target = Util.Convert(transform.position) + Random.insideUnitCircle * walkLength;
 	}
 
 	private void StartWaiting ()

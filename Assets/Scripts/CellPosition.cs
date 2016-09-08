@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 
-public class CellPosition 
+public class CellPosition
 {
-	public int X {
+	public int X
+	{
 		get;
 		set;
 	}
 
-	public int Y {
+	public int Y
+	{
 		get;
 		set;
 	}
 
-	public CellPosition(int x, int y)
+	public CellPosition (int x, int y)
 	{
 		X = x;
 		Y = y;

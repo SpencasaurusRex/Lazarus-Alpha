@@ -15,7 +15,7 @@ public class SpriteChooser : MonoBehaviour
 		ChooseRandom ();
 	}
 
-	public void ChooseRandom() 
+	public void ChooseRandom ()
 	{
 		int index = Random.Range (0, sprites.Length);
 		Sprite chosenSprite = sprites [index];
