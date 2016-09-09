@@ -17,7 +17,7 @@ public class Cell : MonoBehaviour
 		{ 
 			pos = value;
 			// TODO update room object
-			transform.position = Util.MoveXY (transform.position, Util.Convert (pos));
+			transform.localPosition = Util.MoveXY (transform.position, Util.Convert (pos));
 		}
 
 		get

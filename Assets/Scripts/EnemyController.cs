@@ -61,4 +61,9 @@ public class EnemyController : MonoBehaviour
 		currentTime = 0;
 		targetTime = Random.Range (waitTime.x, waitTime.y);
 	}
+
+	public void ApplyDamage(float f)
+	{
+		Debug.Log("Damage: " + f);
+	}
 }

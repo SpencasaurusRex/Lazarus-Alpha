@@ -4,11 +4,11 @@ using System.Collections;
 [RequireComponent (typeof(Rigidbody2D))]
 public class Homing : MonoBehaviour
 {
-	public Transform target;
-	private Rigidbody2D rb;
-
 	[SerializeField]
 	private float speed;
+
+	public Transform target;
+	private Rigidbody2D rb;
 
 	void Start ()
 	{
@@ -28,5 +28,18 @@ public class Homing : MonoBehaviour
 		Vector2 force = (desiredVelocity - rb.velocity).normalized * speed;
         
 		rb.AddForce (force);
+
+		Vector3 rotation = transform.eulerAngles;
+		rotation.z = Mathf.Rad2Deg * Mathf.Atan2 (rb.velocity.y, rb.velocity.x);
+		transform.eulerAngles = rotation;
+	}
+
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (coll.gameObject.tag == "Enemy")
+		{
+			coll.gameObject.SendMessage ("ApplyDamage", 10);
+			Destroy (this.gameObject);
+			Destroy (this);
+		}
 	}
 }
