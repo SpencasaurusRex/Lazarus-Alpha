@@ -7,13 +7,8 @@ public class Homing : MonoBehaviour
 	[SerializeField]
 	private float speed;
 
-	public Transform target;
+	private Transform target;
 	private Rigidbody2D rb;
-
-	void Start ()
-	{
-		rb = GetComponent<Rigidbody2D> ();
-	}
 
 	void Update ()
 	{
@@ -37,9 +32,16 @@ public class Homing : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D coll) {
 		if (coll.gameObject.tag == "Enemy")
 		{
-			coll.gameObject.SendMessage ("ApplyDamage", 10);
+			coll.gameObject.SendMessage ("ApplyDamage", 1);
 			Destroy (this.gameObject);
 			Destroy (this);
 		}
+	}
+
+	public void Fire(Vector2 towards, Transform target)
+	{
+		rb = GetComponent<Rigidbody2D> ();
+		rb.AddForce (towards * speed);
+		this.target = target;
 	}
 }

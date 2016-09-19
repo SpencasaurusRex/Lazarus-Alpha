@@ -21,11 +21,13 @@ public class PlayerController : MonoBehaviour {
 
 	private float spellRecharge;
 
-    void Start() {
+    void Start() 
+	{
         rb = GetComponent<Rigidbody2D>();
     }
 
-	void Update () {
+	void Update () 
+	{
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         rb.velocity = new Vector2(x, y) * walkingSpeed;
@@ -34,9 +36,15 @@ public class PlayerController : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.Space) && spellRecharge >= castingRate)
 		{
-			spellRecharge = 0;
-			Homing h = (Homing)Instantiate (spell, transform.position, transform.rotation);
-			h.target = target;
+			FireSpell ();
 		}
+	}
+
+	void FireSpell()
+	{
+		spellRecharge = 0;
+		Vector2 towardsTarget = Util.Convert (target.position) - Util.Convert (transform.position);
+		Homing h = (Homing)Instantiate (spell, transform.position, transform.rotation);
+		h.Fire (towardsTarget, target);
 	}
 }
