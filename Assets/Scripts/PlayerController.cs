@@ -1,47 +1,50 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour
-{
-    // TODO extract these spell variables into spell controller class
-    public float castingRate;
-    public Homing spell;
-    public Transform target;
-    private float spellRecharge;
+[RequireComponent (typeof(Rigidbody2D))]
+public class PlayerController : MonoBehaviour {
 
-    public float walkingSpeed;
     private Rigidbody2D rb;
 
-    void Start()
-    {
+	// TODO extract spell variables into spell controller class
+	[SerializeField]
+	private float castingRate;
+
+	[SerializeField]
+	private Homing spell;
+
+    [SerializeField]
+    private float walkingSpeed;
+
+	[SerializeField]
+	private Transform target;
+
+	private float spellRecharge;
+
+    void Start() 
+	{
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
-    {
-        spellRecharge += Time.deltaTime;
+	void Update () 
+	{
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+        rb.velocity = new Vector2(x, y) * walkingSpeed;
 
-        if (Input.GetKey(KeyCode.Space) && spellRecharge >= castingRate)
-        {
-            CastSpell();
-        }
-    }
+		spellRecharge += Time.deltaTime;
 
-    void FixedUpdate()
-    {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
+		if (Input.GetKey (KeyCode.Space) && spellRecharge >= castingRate)
+		{
+			FireSpell ();
+		}
+	}
 
-        rb.AddForce(new Vector2(x, y) * walkingSpeed * rb.drag);
-    }
-
-    private void CastSpell()
-    {
-        spellRecharge = 0;
-        Vector2 towardsTarget = Util.Convert(target.position - transform.position);
-        Homing h = (Homing)Instantiate(spell, transform.position, transform.rotation);
-        h.target = target;
-        Rigidbody2D spellRb = h.GetComponent<Rigidbody2D>();
-        spellRb.velocity = towardsTarget.normalized * h.speed;
-    }
+	void FireSpell()
+	{
+		spellRecharge = 0;
+		Vector2 towardsTarget = Util.Convert (target.position) - Util.Convert (transform.position);
+		Homing h = (Homing)Instantiate (spell, transform.position, transform.rotation);
+		h.Fire (towardsTarget, target);
+	}
 }
