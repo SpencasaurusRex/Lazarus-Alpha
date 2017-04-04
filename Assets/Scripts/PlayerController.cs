@@ -1,50 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour {
+[RequireComponent(typeof(Rigidbody2D))]
+public class PlayerController : MonoBehaviour
+{
 
     private Rigidbody2D rb;
 
-	// TODO extract spell variables into spell controller class
-	[SerializeField]
-	private float castingRate;
+    // TODO extract these spell variables into spell controller class
+    public float castingRate;
+    private float spellRecharge;
+    public Homing spell;
+    public Transform target;
 
-	[SerializeField]
-	private Homing spell;
+    public float walkingSpeed;
 
-    [SerializeField]
-    private float walkingSpeed;
-
-	[SerializeField]
-	private Transform target;
-
-	private float spellRecharge;
-
-    void Start() 
-	{
+    void Start()
+    {
         rb = GetComponent<Rigidbody2D>();
     }
 
-	void Update () 
-	{
+    void Update()
+    {
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         rb.velocity = new Vector2(x, y) * walkingSpeed;
 
-		spellRecharge += Time.deltaTime;
+        spellRecharge += Time.deltaTime;
 
-		if (Input.GetKey (KeyCode.Space) && spellRecharge >= castingRate)
-		{
-			FireSpell ();
-		}
-	}
+        if (Input.GetKey(KeyCode.Space) && spellRecharge >= castingRate)
+        {
+            FireSpell();
+        }
+    }
 
-	void FireSpell()
-	{
-		spellRecharge = 0;
-		Vector2 towardsTarget = Util.Convert (target.position) - Util.Convert (transform.position);
-		Homing h = (Homing)Instantiate (spell, transform.position, transform.rotation);
-		h.Fire (towardsTarget, target);
-	}
+    void FireSpell()
+    {
+        spellRecharge = 0;
+        Vector2 towards = Util.Convert(target.position) - Util.Convert(transform.position);
+        Homing h = (Homing)Instantiate(spell, transform.position, transform.rotation);
+        h.Fire(towards, target);
+    }
 }
