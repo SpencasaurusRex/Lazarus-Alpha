@@ -1,42 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
+    // TODO extract these spell variables into spell controller class
+    public float castingRate;
+    public Homing spell;
+    public Transform target;
+    private float spellRecharge;
 
+    public float walkingSpeed;
     private Rigidbody2D rb;
 
-	// TODO extract spell variables into spell controller class
-	[SerializeField]
-	private float castingRate;
-
-	[SerializeField]
-	private Homing spell;
-
-    [SerializeField]
-    private float walkingSpeed;
-
-	[SerializeField]
-	private Transform target;
-
-	private float spellRecharge;
-
-    void Start() {
+    void Start()
+    {
         rb = GetComponent<Rigidbody2D>();
     }
 
-	void Update () {
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        rb.velocity = new Vector2(x, y) * walkingSpeed;
+    void Update()
+    {
+        spellRecharge += Time.deltaTime;
 
-		spellRecharge += Time.deltaTime;
+        if (Input.GetKey(KeyCode.Space) && spellRecharge >= castingRate)
+        {
+            CastSpell();
+        }
+    }
 
-		if (Input.GetKey (KeyCode.Space) && spellRecharge >= castingRate)
-		{
-			spellRecharge = 0;
-			Homing h = (Homing)Instantiate (spell, transform.position, transform.rotation);
-			h.target = target;
-		}
-	}
+    void FixedUpdate()
+    {
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+
+        rb.AddForce(new Vector2(x, y) * walkingSpeed * rb.drag);
+    }
+
+    private void CastSpell()
+    {
+        spellRecharge = 0;
+        Vector2 towardsTarget = Util.Convert(target.position - transform.position);
+        Homing h = (Homing)Instantiate(spell, transform.position, transform.rotation);
+        h.target = target;
+        Rigidbody2D spellRb = h.GetComponent<Rigidbody2D>();
+        spellRb.velocity = towardsTarget.normalized * h.speed;
+    }
 }
